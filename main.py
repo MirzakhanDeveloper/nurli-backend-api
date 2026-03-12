@@ -44,19 +44,24 @@ while True:
                 
                 # --- API ga ma'lumot yuborish qismi ---
               
-                api_url = "https://nurli-api.onrender.com/attendance"
+               api_url = "https://nurli-api.onrender.com/attendance"
+                
+                # YANGI: Qorovul uchun kalitni tayyorlaymiz
+                headers = {
+                    "X-API-Key": "Nurli_Super_Secret_Key_2026_!@#"
+                }
+                
                 data = {
                     "student_id": str(student_id),
                     "timestamp": current_time,
                     "camera_location": "Maktab_Asosiy_Kirish"
                 }
                 try:
-                    # Lokal FastAPI serverga POST so'rov yuboramiz
-                    response = requests.post(api_url, json=data)
+                    # YANGI: headers=headers ni qo'shib yuboramiz
+                    response = requests.post(api_url, json=data, headers=headers)
                     print("🌐 Server javobi:", response.json())
                 except Exception as e:
-                    print("⚠️ Serverga ulanib bo'lmadi! API (api.py) ishlayotganini tekshiring.")
-                # --------------------------------------
+                    print("⚠️ Serverga ulanib bo'lmadi! API ishlayotganini tekshiring.")
                 
             else:
                 recognized_student = None

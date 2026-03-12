@@ -1,6 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends # Depends qo'shildi
 from pydantic import BaseModel
 from database.firebase_db import db
+from core.security import verify_api_key # Qorovulni chaqirib oldik
 
 router = APIRouter()
 
@@ -9,7 +10,8 @@ class AttendanceEvent(BaseModel):
     timestamp: str
     camera_location: str
 
-@router.post("/attendance")
+# DIQQAT: Endpointga "dependencies" orqali qulf osdik!
+@router.post("/attendance", dependencies=[Depends(verify_api_key)])
 def record_attendance(event: AttendanceEvent):
     print(f"☁️ SERVERGA KELDI -> O'quvchi ID: {event.student_id} | Vaqt: {event.timestamp}")
     try:
