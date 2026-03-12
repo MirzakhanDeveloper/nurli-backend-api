@@ -43,7 +43,8 @@ while True:
                 print(f"✅ O'quvchi aniqlandi! ID: {student_id} | Vaqt: {current_time}")
                 
                 # --- API ga ma'lumot yuborish qismi ---
-                api_url = "http://127.0.0.1:8000/attendance"
+              
+                api_url = "https://nurli-api.onrender.com/attendance"
                 data = {
                     "student_id": str(student_id),
                     "timestamp": current_time,
