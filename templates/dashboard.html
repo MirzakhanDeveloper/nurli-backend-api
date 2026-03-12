@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Nurli - Super Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    <nav class="bg-blue-900 p-4 shadow-lg">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="text-white font-bold text-2xl">
+                <i class="fa-solid fa-graduation-cap mr-2"></i> Nurli Venture Studio
+            </div>
+            <div class="text-white text-sm">
+                <span class="bg-green-500 px-3 py-1 rounded-full"><i class="fa-solid fa-server"></i> Tizim faol</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-10 px-4">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Jonli Davomat Paneli</h1>
+        
+        <div class="bg-white shadow-md rounded my-6">
+            <table class="text-left w-full border-collapse">
+                <thead>
+                    <tr>
+                        <th class="py-4 px-6 bg-gray-50 font-bold uppercase text-sm text-gray-600 border-b border-gray-200">ID / O'quvchi</th>
+                        <th class="py-4 px-6 bg-gray-50 font-bold uppercase text-sm text-gray-600 border-b border-gray-200">Vaqt</th>
+                        <th class="py-4 px-6 bg-gray-50 font-bold uppercase text-sm text-gray-600 border-b border-gray-200">Kamera Joylashuvi</th>
+                        <th class="py-4 px-6 bg-gray-50 font-bold uppercase text-sm text-gray-600 border-b border-gray-200">Holat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr class="hover:bg-gray-100 border-b border-gray-200 py-10">
+                        <td class="py-4 px-6 text-gray-700 font-bold"><i class="fa-solid fa-user-check text-blue-500 mr-2"></i> {{ log.student_id }}</td>
+                        <td class="py-4 px-6 text-gray-600">{{ log.last_seen }}</td>
+                        <td class="py-4 px-6 text-gray-600"><i class="fa-solid fa-video text-gray-400 mr-1"></i> {{ log.camera }}</td>
+                        <td class="py-4 px-6">
+                            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">Keldi</span>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="py-8 text-center text-gray-500">Hozircha davomat ma'lumotlari yo'q...</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
