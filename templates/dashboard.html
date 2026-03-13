@@ -33,9 +33,9 @@
                 </thead>
                 <tbody>
                     {% for log in logs %}
-                    <tr class="hover:bg-gray-100 border-b border-gray-200 py-10">
+                    <tr id="row-{{ log.student_id }}" class="hover:bg-gray-100 border-b border-gray-200 py-10 transition-colors duration-500">
                         <td class="py-4 px-6 text-gray-700 font-bold"><i class="fa-solid fa-user-check text-blue-500 mr-2"></i> {{ log.student_id }}</td>
-                        <td class="py-4 px-6 text-gray-600">{{ log.last_seen }}</td>
+                        <td class="py-4 px-6 text-gray-600 time-cell">{{ log.last_seen }}</td>
                         <td class="py-4 px-6 text-gray-600"><i class="fa-solid fa-video text-gray-400 mr-1"></i> {{ log.camera }}</td>
                         <td class="py-4 px-6">
                             <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">Keldi</span>
@@ -50,5 +50,42 @@
             </table>
         </div>
     </div>
+
+    <script>
+        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+        const ws = new WebSocket(`${protocol}://${window.location.host}/ws/dashboard`);
+
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const tableBody = document.querySelector("tbody");
+            
+            // O'quvchi jadvalda bor-yo'qligini ID orqali qidiramiz
+            const existingRow = document.getElementById(`row-${data.student_id}`);
+
+            if (existingRow) {
+                // Agar bor bo'lsa, faqat vaqtini yangilaymiz
+                existingRow.querySelector('.time-cell').innerText = data.last_seen;
+                
+                // Yangilanganini bildirish uchun fonni vaqtincha yashil qilamiz
+                existingRow.classList.add('bg-green-200');
+                setTimeout(() => {
+                    existingRow.classList.remove('bg-green-200');
+                }, 1000);
+            } else {
+                // Agar yangi o'quvchi bo'lsa, jadvalning eng tepasiga yangi qator qo'shamiz
+                const newRow = `
+                    <tr id="row-${data.student_id}" class="hover:bg-gray-100 border-b border-gray-200 py-10 bg-green-50 transition-colors duration-500">
+                        <td class="py-4 px-6 text-gray-700 font-bold"><i class="fa-solid fa-user-check text-blue-500 mr-2"></i> ${data.student_id}</td>
+                        <td class="py-4 px-6 text-gray-600 time-cell">${data.last_seen}</td>
+                        <td class="py-4 px-6 text-gray-600"><i class="fa-solid fa-video text-gray-400 mr-1"></i> ${data.camera}</td>
+                        <td class="py-4 px-6">
+                            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">${data.status}</span>
+                        </td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('afterbegin', newRow);
+            }
+        };
+    </script>
 </body>
 </html>
